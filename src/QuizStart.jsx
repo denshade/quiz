@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 
 const Quiz = ({data}) => {
+
+    const [answerMap, setAnswerMap]=useState({});
+
+
     const handleChangeData = (event) => {
-        debugger;
-        //setData(event.target.value);
+        if (event.target.value = event.target.getAttribute("answer")) {
+            setAnswerMap(answerMap[0]);
+        }
     };
 
     return <> {data.map(e => <><p> {e.question}</p> <input type="text" answer={e.answer} onChange={handleChangeData} value={e.answer}/></>)}
