@@ -2,32 +2,33 @@ import React, { useState } from "react";
 
 const Quiz = ({data}) => {
 
-    const [answers, setAnswers]=useState(new Set());
+    const [answers, setAnswers]=useState([]);
     const [correctAnswers, setValue]=useState([]);
 
 
     const handleChangeData = (event) => {
         const question = event.target.getAttribute("question");
         const answer = event.target.getAttribute("answer");
-        
-        if (event.target.value == answer) {
-            correctAnswers.add(question);
-        } else {
-            correctAnswers.delete(question);
-        }
-        setCorrectAnswers(correctAnswers);
+        const id = event.target.id;
+        answers[id] = event.target.value;
+        setAnswers(answers);
     };
 
-    return <> {data.map(e => <><p> {e.question}</p> <input type="text" question={e.question} answer={e.answer} onChange={handleChangeData} value={e.answer}/></>)}
+    const getData = (id) => answers[id];
+
+    return <> {data.map(e => <><p> {e.question}</p> <input type="text" key={e.id} id={e.id} question={e.question} answer={e.answer} onChange={handleChangeData} value={getData(e.id)}/></>)}
     <button>Submit answers</button>
     </>;
 }
 
 const convertData = (data, sep) => {
     var list = [];
-    var obj = {};
-    for (var line of data.split("\n")) {
-        var lineArr =line.split(sep);
+    const lines = data.split("\n");
+    for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+        var line = lines[lineIndex];
+        var lineArr = line.split(sep);
+        var obj = {};
+        obj.id = lineIndex;
         obj.question = lineArr[0];
         obj.answer = lineArr[1];
         list.push(obj);
