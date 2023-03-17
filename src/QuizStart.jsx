@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Quiz = ({ data }) => {
+const Quiz = ({ data, setQuizing }) => {
 
     const calculate = () => {
         let score = 0;
@@ -19,11 +19,13 @@ const Quiz = ({ data }) => {
 
     return <>
         {data.map(e => <>
-            <p> {e.question}</p>
+            <p key={"p"+e.id}> {e.question}</p>
             <input type="text" key={e.id} id={"quiz-" + e.id} question={e.question} answer={e.answer} />
         </>)}
         <p>Answers correct {correctAnswers} / {data.length}</p>
         <button onClick={calc}>Submit answers</button>
+        <button onClick={()=>setQuizing(false)}>Back to settings</button>
+
     </>;
 }
 
@@ -68,7 +70,7 @@ const QuizStart = () => {
             <label><input type="checkbox" checked={uriQuestion} onChange={() => setUriQuestion(!uriQuestion)} />Load Question as image if URI</label>
             <label>Separated by <input type="text" value={separator} onChange={handleChangeSeparator} /></label>
             <button onClick={() => setQuizing(true)}>Start Quiz</button></>)}
-        {quizing && <Quiz data={questionsAndStuff}>/</Quiz>}
+        {quizing && <Quiz setQuizing={setQuizing} data={questionsAndStuff}>/</Quiz>}
     </>;
 
 }
