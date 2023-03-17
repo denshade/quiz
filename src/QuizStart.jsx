@@ -2,9 +2,17 @@ import React, { useState } from "react";
 
 const Quiz = ({data}) => {
 
+    const calculate = (data, answers) => {
+        let score = 0;
+        for (let id in answers) {
+            if (answers[id] == data.filter(e => e.id == id)[0].answer) {
+                score++;
+            }
+        }
+        return score;
+    }
     const [answers, setAnswers]=useState([]);
-    const [correctAnswers, setValue]=useState([]);
-
+    const [correctAnswers, setCorrectAnswers] = useState(0);
 
     const handleChangeData = (event) => {
         const question = event.target.getAttribute("question");
@@ -12,12 +20,18 @@ const Quiz = ({data}) => {
         const id = event.target.id;
         answers[id] = event.target.value;
         setAnswers(answers);
+        setCorrectAnswers(calculate(data, answers));
     };
 
     const getData = (id) => answers[id];
 
-    return <> {data.map(e => <><p> {e.question}</p> <input type="text" key={e.id} id={e.id} question={e.question} answer={e.answer} onChange={handleChangeData} value={getData(e.id)}/></>)}
-    <button>Submit answers</button>
+    return <> 
+    {data.map(e => <>
+        <p> {e.question}</p> 
+        <input type="text" key={e.id} id={e.id} question={e.question} answer={e.answer} onChange={handleChangeData} value={getData(e.id)}/>
+    </>)}
+    <p>Answers correct {correctAnswers} / {data.length}</p>
+        <button>Submit answers</button>
     </>;
 }
 
