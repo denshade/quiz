@@ -2,38 +2,28 @@ import React, { useState } from "react";
 
 const Quiz = ({data}) => {
 
-    const calculate = (data, answers) => {
+    const calculate = () => {
         let score = 0;
-        for (let id in answers) {
-            if (answers[id] == data.filter(e => e.id == id)[0].answer) {
+        for (let dataElement of data) {
+            const val = document.getElementById("quiz-"+dataElement.id).value;
+            if (val === dataElement.answer) {
                 score++;
             }
         }
         return score;
     }
-    const [answers, setAnswers]=useState([]);
-    const [correctAnswers, setCorrectAnswers] = useState(0);
-
-    const handleChangeData = (event) => {
-        const question = event.target.getAttribute("question");
-        const answer = event.target.getAttribute("answer");
-        const id = event.target.getAttribute("id");
-        answers[id] = event.target.value;
-        setCorrectAnswers(calculate(data, answers));
-        setAnswers(answers);
-    };
-
-    const getData = (id) => {
-        return answers[id]==null?"":answers[id];
+    const calc = () => {
+        setCorrectAnswers(calculate());
     }
+    const [correctAnswers, setCorrectAnswers] = useState(0);
 
     return <> 
     {data.map(e => <>
         <p> {e.question}</p> 
-        <input type="text" key={e.id} id={e.id} question={e.question} answer={e.answer} onChange={handleChangeData} value={getData(e.id)}/>
+        <input type="text" key={e.id} id={"quiz-"+e.id} question={e.question} answer={e.answer} />
     </>)}
     <p>Answers correct {correctAnswers} / {data.length}</p>
-        <button>Submit answers</button>
+        <button onClick={calc}>Submit answers</button>
     </>;
 }
 
