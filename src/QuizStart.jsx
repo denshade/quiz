@@ -2,16 +2,23 @@ import React, { useState } from "react";
 
 const Quiz = ({data}) => {
 
-    const [answerMap, setAnswerMap]=useState({});
+    const [answers, setAnswers]=useState(new Set());
+    const [correctAnswers, setValue]=useState([]);
 
 
     const handleChangeData = (event) => {
-        if (event.target.value = event.target.getAttribute("answer")) {
-            setAnswerMap(answerMap[0]);
+        const question = event.target.getAttribute("question");
+        const answer = event.target.getAttribute("answer");
+        
+        if (event.target.value == answer) {
+            correctAnswers.add(question);
+        } else {
+            correctAnswers.delete(question);
         }
+        setCorrectAnswers(correctAnswers);
     };
 
-    return <> {data.map(e => <><p> {e.question}</p> <input type="text" answer={e.answer} onChange={handleChangeData} value={e.answer}/></>)}
+    return <> {data.map(e => <><p> {e.question}</p> <input type="text" question={e.question} answer={e.answer} onChange={handleChangeData} value={e.answer}/></>)}
     <button>Submit answers</button>
     </>;
 }
