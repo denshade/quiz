@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Button from 'react-bootstrap/Button';
+import FormCheckInput from 'react-bootstrap/FormCheckInput';
 
 const Quiz = ({ data, setQuizing }) => {
 
@@ -23,9 +25,8 @@ const Quiz = ({ data, setQuizing }) => {
             <input type="text" key={e.id} id={"quiz-" + e.id} question={e.question} answer={e.answer} />
         </>)}
         <p>Answers correct {correctAnswers} / {data.length}</p>
-        <button onClick={calc}>Submit answers</button>
-        <button onClick={()=>setQuizing(false)}>Back to settings</button>
-
+        <Button onClick={calc}>Submit answers</Button>
+        <Button onClick={()=>setQuizing(false)}>Back to settings</Button>
     </>;
 }
 
@@ -64,12 +65,12 @@ const QuizStart = () => {
     };
     return <>
         {!quizing && (<><textarea rows={10} cols={100} onChange={handleChangeData}>{data}</textarea>
-            <label><input type="checkbox" checked={isCaseSensitive} onChange={() => setCaseSensitive(!isCaseSensitive)} />Case sensitive</label>
-            <label><input type="checkbox" checked={randomizeOrder} onChange={() => setRandomizeOrder(!randomizeOrder)} />Randomize order</label>
-            <label><input type="checkbox" checked={questionOnLeft} onChange={() => setQuestionOnLeft(!questionOnLeft)} />Question on left</label>
-            <label><input type="checkbox" checked={uriQuestion} onChange={() => setUriQuestion(!uriQuestion)} />Load Question as image if URI</label>
+            <label><FormCheckInput checked={isCaseSensitive} onChange={() => setCaseSensitive(!isCaseSensitive)} /> Case sensitive</label>
+            <label><FormCheckInput checked={randomizeOrder} onChange={() => setRandomizeOrder(!randomizeOrder)} /> Randomize order</label>
+            <label><FormCheckInput checked={questionOnLeft} onChange={() => setQuestionOnLeft(!questionOnLeft)} /> Question on left</label>
+            <label><FormCheckInput checked={uriQuestion} onChange={() => setUriQuestion(!uriQuestion)} /> Load Question as image if URI</label>
             <label>Separated by <input type="text" value={separator} onChange={handleChangeSeparator} /></label>
-            <button onClick={() => setQuizing(true)}>Start Quiz</button></>)}
+            <Button onClick={() => setQuizing(true)}>Start Quiz</Button></>)}
         {quizing && <Quiz setQuizing={setQuizing} data={questionsAndStuff}>/</Quiz>}
     </>;
 
