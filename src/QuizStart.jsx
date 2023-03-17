@@ -17,13 +17,15 @@ const Quiz = ({data}) => {
     const handleChangeData = (event) => {
         const question = event.target.getAttribute("question");
         const answer = event.target.getAttribute("answer");
-        const id = event.target.id;
+        const id = event.target.getAttribute("id");
         answers[id] = event.target.value;
-        setAnswers(answers);
         setCorrectAnswers(calculate(data, answers));
+        setAnswers(answers);
     };
 
-    const getData = (id) => answers[id];
+    const getData = (id) => {
+        return answers[id]==null?"":answers[id];
+    }
 
     return <> 
     {data.map(e => <>
