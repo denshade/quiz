@@ -93,7 +93,7 @@ const QuizStart = () => {
     const [quizing, setQuizing] = useState(false);
     const [isCaseSensitive, setCaseSensitive] = useState(true);
     const [randomizeOrder, setRandomizeOrder] = useState(true);
-    const [swapQuestion, setQuestionOnLeft] = useState(true);
+    const [swapQuestion, setQuestionOnLeft] = useState(false);
     const [uriQuestion, setUriQuestion] = useState(true);
     const [separator, setSeparator] = useState(",");
     const [data, setData] = useState("");
@@ -110,7 +110,7 @@ const QuizStart = () => {
     return <>
         {!quizing && (<>
         
-        <label>Add your quiz data here. Separate questions by ','</label><textarea rows={10} cols={100} onChange={handleChangeData}>{data}</textarea>
+        <label>Add your quiz data here. Separate questions by ','</label><textarea rows={10} cols={100} onChange={handleChangeData} value={data}></textarea>
 
             <Options>
                 <label><FormCheckInput checked={isCaseSensitive} onChange={() => setCaseSensitive(!isCaseSensitive)} /> Case sensitive</label>
