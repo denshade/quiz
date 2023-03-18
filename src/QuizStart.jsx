@@ -80,6 +80,7 @@ const convertData = (data, sep, randomizeOrder, swapQuestion, nrQuestions) => {
     for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
         var line = lines[lineIndex];
         var lineArr = line.split(sep);
+        if (lineArr.length != 2) continue;
         var obj = {};
         obj.id = lineIndex;
         if (swapQuestion) {
