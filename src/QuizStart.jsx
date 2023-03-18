@@ -46,7 +46,8 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
 
     return <>
         {data.map(e => <>
-            <p key={"p"+e.id}> {e.question}</p>
+            {e.question.startsWith("http") && <img src={e.question} key={"p"+e.id}/>}
+            {!e.question.startsWith("http") && <p key={"p"+e.id}> {e.question}</p>}
             <input type="text" key={e.id} id={"quiz-" + e.id} question={e.question} answer={e.answer} />
         </>)}
         <Score>
@@ -66,11 +67,15 @@ function shuffleArray(array) {
     }
 }
 
-const convertData = (data, sep, randomizeOrder, swapQuestion) => {
+const convertData = (data, sep, randomizeOrder, swapQuestion, nrQuestions) => {
     var list = [];
     let lines = data.split("\n");
     if (randomizeOrder) {
         shuffleArray(lines);
+    }
+    const nrQuestionsInt = parseInt(nrQuestions)
+    if(!isNaN(nrQuestionsInt)) {
+        lines=lines.slice(0, nrQuestionsInt);
     }
     for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
         var line = lines[lineIndex];
@@ -96,9 +101,10 @@ const QuizStart = () => {
     const [swapQuestion, setQuestionOnLeft] = useState(false);
     const [uriQuestion, setUriQuestion] = useState(true);
     const [separator, setSeparator] = useState(",");
+    const [nrQuestions, setNrQuestions] = useState("");
     const [data, setData] = useState("");
 
-    const questionsAndStuff = convertData(data, separator, randomizeOrder, swapQuestion);
+    const questionsAndStuff = convertData(data, separator, randomizeOrder, swapQuestion, nrQuestions);
 
     const handleChangeData = (event) => {
         setData(event.target.value);
@@ -107,6 +113,10 @@ const QuizStart = () => {
     const handleChangeSeparator = (event) => {
         setSeparator(event.target.value);
     };
+
+    const handleChangeQuestions = (event) => {
+        setNrQuestions(event.target.value);
+    }
     return <>
         {!quizing && (<>
         
@@ -118,6 +128,7 @@ const QuizStart = () => {
                 <label><FormCheckInput checked={swapQuestion} onChange={() => setQuestionOnLeft(!swapQuestion)} /> Swap question and answer</label>
                 <label><FormCheckInput checked={uriQuestion} onChange={() => setUriQuestion(!uriQuestion)} /> Load Question as image if URI</label>
                 <label>Separated by <input type="text" value={separator} onChange={handleChangeSeparator} /></label>
+                <label>#Questions to ask (leave empty for all questions) <input type="text" value={nrQuestions} onChange={handleChangeQuestions} /></label>
             </Options>
             <MyButton onClick={() => setQuizing(true)}>Start Quiz</MyButton></>)}
         {quizing && <Quiz setQuizing={setQuizing} isCaseSensitive={isCaseSensitive} separator={separator} data={questionsAndStuff}>/</Quiz>}
