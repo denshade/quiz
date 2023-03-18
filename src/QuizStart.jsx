@@ -33,7 +33,7 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
                 val = val.toLowerCase();
                 ans = ans.toLowerCase();
             }
-            if (val === dataElement.answer) {
+            if (val === ans) {
                 score++;
             }
         }
@@ -57,16 +57,33 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
     </>;
 }
 
-const convertData = (data, sep) => {
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
+const convertData = (data, sep, randomizeOrder, swapQuestion) => {
     var list = [];
-    const lines = data.split("\n");
+    let lines = data.split("\n");
+    if (randomizeOrder) {
+        shuffleArray(lines);
+    }
     for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
         var line = lines[lineIndex];
         var lineArr = line.split(sep);
         var obj = {};
         obj.id = lineIndex;
-        obj.question = lineArr[0];
-        obj.answer = lineArr[1];
+        if (swapQuestion) {
+            obj.question = lineArr[1];
+            obj.answer = lineArr[0];    
+        } else {
+            obj.question = lineArr[0];
+            obj.answer = lineArr[1];    
+        }
         list.push(obj);
     }
     return list;
@@ -76,12 +93,12 @@ const QuizStart = () => {
     const [quizing, setQuizing] = useState(false);
     const [isCaseSensitive, setCaseSensitive] = useState(true);
     const [randomizeOrder, setRandomizeOrder] = useState(true);
-    const [questionOnLeft, setQuestionOnLeft] = useState(true);
+    const [swapQuestion, setQuestionOnLeft] = useState(true);
     const [uriQuestion, setUriQuestion] = useState(true);
     const [separator, setSeparator] = useState(",");
     const [data, setData] = useState("");
 
-    const questionsAndStuff = convertData(data, separator);
+    const questionsAndStuff = convertData(data, separator, randomizeOrder, swapQuestion);
 
     const handleChangeData = (event) => {
         setData(event.target.value);
@@ -98,12 +115,12 @@ const QuizStart = () => {
             <Options>
                 <label><FormCheckInput checked={isCaseSensitive} onChange={() => setCaseSensitive(!isCaseSensitive)} /> Case sensitive</label>
                 <label><FormCheckInput checked={randomizeOrder} onChange={() => setRandomizeOrder(!randomizeOrder)} /> Randomize order</label>
-                <label><FormCheckInput checked={questionOnLeft} onChange={() => setQuestionOnLeft(!questionOnLeft)} /> Question on left</label>
+                <label><FormCheckInput checked={swapQuestion} onChange={() => setQuestionOnLeft(!swapQuestion)} /> Swap question and answer</label>
                 <label><FormCheckInput checked={uriQuestion} onChange={() => setUriQuestion(!uriQuestion)} /> Load Question as image if URI</label>
                 <label>Separated by <input type="text" value={separator} onChange={handleChangeSeparator} /></label>
             </Options>
             <MyButton onClick={() => setQuizing(true)}>Start Quiz</MyButton></>)}
-        {quizing && <Quiz setQuizing={setQuizing} isCaseSensitive={isCaseSensitive} data={questionsAndStuff}>/</Quiz>}
+        {quizing && <Quiz setQuizing={setQuizing} isCaseSensitive={isCaseSensitive} separator={separator} data={questionsAndStuff}>/</Quiz>}
     </>;
 
 }
