@@ -1,6 +1,26 @@
 import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import FormCheckInput from 'react-bootstrap/FormCheckInput';
+import styled from 'styled-components';
+
+const Options = styled(Card)`
+background-color: black;
+padding: 20px;
+margin: 10px;
+text-align: left;
+`;
+
+const Score = styled(Card)`
+background-color: black;
+padding: 20px;
+margin: 10px;
+text-align: left;
+`;
+
+const MyButton = styled(Button)`
+margin: 5px;
+`;
 
 const Quiz = ({ data, setQuizing }) => {
 
@@ -24,9 +44,11 @@ const Quiz = ({ data, setQuizing }) => {
             <p key={"p"+e.id}> {e.question}</p>
             <input type="text" key={e.id} id={"quiz-" + e.id} question={e.question} answer={e.answer} />
         </>)}
-        <p>Answers correct {correctAnswers} / {data.length}</p>
-        <Button onClick={calc}>Submit answers</Button>
-        <Button onClick={()=>setQuizing(false)}>Back to settings</Button>
+        <Score>
+            <p>Answers correct {correctAnswers} / {data.length}</p>
+            <MyButton onClick={calc}>Check answers</MyButton>
+        </Score>
+        <MyButton onClick={()=>setQuizing(false)}>Back to settings</MyButton>
     </>;
 }
 
@@ -64,13 +86,18 @@ const QuizStart = () => {
         setSeparator(event.target.value);
     };
     return <>
-        {!quizing && (<><textarea rows={10} cols={100} onChange={handleChangeData}>{data}</textarea>
-            <label><FormCheckInput checked={isCaseSensitive} onChange={() => setCaseSensitive(!isCaseSensitive)} /> Case sensitive</label>
-            <label><FormCheckInput checked={randomizeOrder} onChange={() => setRandomizeOrder(!randomizeOrder)} /> Randomize order</label>
-            <label><FormCheckInput checked={questionOnLeft} onChange={() => setQuestionOnLeft(!questionOnLeft)} /> Question on left</label>
-            <label><FormCheckInput checked={uriQuestion} onChange={() => setUriQuestion(!uriQuestion)} /> Load Question as image if URI</label>
-            <label>Separated by <input type="text" value={separator} onChange={handleChangeSeparator} /></label>
-            <Button onClick={() => setQuizing(true)}>Start Quiz</Button></>)}
+        {!quizing && (<>
+        
+        <label>Add your quiz data here. Separate questions by ','</label><textarea rows={10} cols={100} onChange={handleChangeData}>{data}</textarea>
+
+            <Options>
+                <label><FormCheckInput checked={isCaseSensitive} onChange={() => setCaseSensitive(!isCaseSensitive)} /> Case sensitive</label>
+                <label><FormCheckInput checked={randomizeOrder} onChange={() => setRandomizeOrder(!randomizeOrder)} /> Randomize order</label>
+                <label><FormCheckInput checked={questionOnLeft} onChange={() => setQuestionOnLeft(!questionOnLeft)} /> Question on left</label>
+                <label><FormCheckInput checked={uriQuestion} onChange={() => setUriQuestion(!uriQuestion)} /> Load Question as image if URI</label>
+                <label>Separated by <input type="text" value={separator} onChange={handleChangeSeparator} /></label>
+            </Options>
+            <MyButton onClick={() => setQuizing(true)}>Start Quiz</MyButton></>)}
         {quizing && <Quiz setQuizing={setQuizing} data={questionsAndStuff}>/</Quiz>}
     </>;
 
