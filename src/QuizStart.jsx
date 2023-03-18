@@ -22,12 +22,17 @@ const MyButton = styled(Button)`
 margin: 5px;
 `;
 
-const Quiz = ({ data, setQuizing }) => {
+const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
 
     const calculate = () => {
         let score = 0;
         for (let dataElement of data) {
-            const val = document.getElementById("quiz-" + dataElement.id).value;
+            let val = document.getElementById("quiz-" + dataElement.id).value;
+            let ans = dataElement.answer;
+            if (isCaseSensitive) {
+                val = val.toLowerCase();
+                ans = ans.toLowerCase();
+            }
             if (val === dataElement.answer) {
                 score++;
             }
@@ -69,7 +74,7 @@ const convertData = (data, sep) => {
 
 const QuizStart = () => {
     const [quizing, setQuizing] = useState(false);
-    const [isCaseSensitive, setCaseSensitive] = useState();
+    const [isCaseSensitive, setCaseSensitive] = useState(true);
     const [randomizeOrder, setRandomizeOrder] = useState(true);
     const [questionOnLeft, setQuestionOnLeft] = useState(true);
     const [uriQuestion, setUriQuestion] = useState(true);
@@ -98,7 +103,7 @@ const QuizStart = () => {
                 <label>Separated by <input type="text" value={separator} onChange={handleChangeSeparator} /></label>
             </Options>
             <MyButton onClick={() => setQuizing(true)}>Start Quiz</MyButton></>)}
-        {quizing && <Quiz setQuizing={setQuizing} data={questionsAndStuff}>/</Quiz>}
+        {quizing && <Quiz setQuizing={setQuizing} isCaseSensitive={isCaseSensitive} data={questionsAndStuff}>/</Quiz>}
     </>;
 
 }
