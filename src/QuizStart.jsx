@@ -18,6 +18,11 @@ margin: 10px;
 text-align: left;
 `;
 
+const Question = styled(Card)`
+background-color: black;
+margin: 10px;
+`;
+
 const MyButton = styled(Button)`
 margin: 5px;
 `;
@@ -47,11 +52,11 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
     const [correctAnswers, setCorrectAnswers] = useState(0);
 
     return <>
-        {data.map(e => <>
+        {data.map(e => <Question>
             {e.question.startsWith("http") && <img src={e.question} key={"p"+e.id}/>}
             {!e.question.startsWith("http") && <p key={"p"+e.id}> {e.question}</p>}
             <input type="text" key={e.id} id={"quiz-" + e.id} question={e.question} answer={e.answer} />
-        </>)}
+        </Question>)}
         <Score>
             <p>Answers correct {correctAnswers} / {data.length}</p>
             <MyButton onClick={calc}>Check answers</MyButton>
