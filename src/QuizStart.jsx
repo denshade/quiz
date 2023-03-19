@@ -23,6 +23,10 @@ background-color: black;
 margin: 10px;
 `;
 
+const TextImport = styled.textarea`
+font-size:10px;
+`;
+
 const MyButton = styled(Button)`
 margin: 5px;
 `;
@@ -128,9 +132,12 @@ const QuizStart = () => {
     }
     return <>
         {!quizing && (<>
-        
+            <img 
+          src={require('./logo-192.png')} 
+          alt="logo" 
+        />
         <label>Add your quiz data here. 
-            Separate questions by '{separator}'</label><textarea rows={10} cols={100} onChange={handleChangeData} value={data}></textarea>
+            Separate questions by '{separator}'</label><TextImport rows={10} cols={100} onChange={handleChangeData} value={data}></TextImport>
 
             <Options>
                 <label><FormCheckInput checked={isCaseSensitive} onChange={() => setCaseSensitive(!isCaseSensitive)} /> Case sensitive</label>
