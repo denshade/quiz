@@ -35,6 +35,8 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
             }
             if (val === ans) {
                 score++;
+            } else {
+                console.log(val + " vs. " + ans);
             }
         }
         return score;
@@ -101,6 +103,7 @@ const QuizStart = () => {
     const [randomizeOrder, setRandomizeOrder] = useState(true);
     const [swapQuestion, setQuestionOnLeft] = useState(false);
     const [uriQuestion, setUriQuestion] = useState(true);
+    const [matchAnyOrder, setMatchAnyOrder] = useState(true);
     const [separator, setSeparator] = useState(",");
     const [nrQuestions, setNrQuestions] = useState("");
     const [data, setData] = useState("");
@@ -121,12 +124,14 @@ const QuizStart = () => {
     return <>
         {!quizing && (<>
         
-        <label>Add your quiz data here. Separate questions by ','</label><textarea rows={10} cols={100} onChange={handleChangeData} value={data}></textarea>
+        <label>Add your quiz data here. 
+            Separate questions by '{separator}'</label><textarea rows={10} cols={100} onChange={handleChangeData} value={data}></textarea>
 
             <Options>
                 <label><FormCheckInput checked={isCaseSensitive} onChange={() => setCaseSensitive(!isCaseSensitive)} /> Case sensitive</label>
                 <label><FormCheckInput checked={randomizeOrder} onChange={() => setRandomizeOrder(!randomizeOrder)} /> Randomize order</label>
                 <label><FormCheckInput checked={swapQuestion} onChange={() => setQuestionOnLeft(!swapQuestion)} /> Swap question and answer</label>
+                <label><FormCheckInput checked={matchAnyOrder} onChange={() => setMatchAnyOrder(!matchAnyOrder)} /> Match words in any order</label>
                 <label><FormCheckInput checked={uriQuestion} onChange={() => setUriQuestion(!uriQuestion)} /> Load Question as image if URI</label>
                 <label>Separated by <input type="text" value={separator} onChange={handleChangeSeparator} /></label>
                 <label>#Questions to ask (leave empty for all questions) <input type="text" value={nrQuestions} onChange={handleChangeQuestions} /></label>
