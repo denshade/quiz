@@ -32,7 +32,7 @@ font-size:10px;
 const MyButton = styled(Button)`
 margin: 5px;
 `;
-
+const isImageQuestion = (e) => e.question.startsWith("http"); 
 const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
     const [correctAnswers, setCorrectAnswers] = useState(0);
 
@@ -58,8 +58,8 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
     }
     return <>
         {data.map(e => <Question>
-            {e.question.startsWith("http") && <img src={e.question} key={"p"+e.id}/>}
-            {!e.question.startsWith("http") && <p key={"p"+e.id}> {e.question}</p>}
+            {isImageQuestion(e) && <img src={e.question} key={"p"+e.id}/>}
+            {!isImageQuestion(e) && <p key={"p"+e.id}> {e.question}</p>}
             <input type="text" key={e.id} id={"quiz-" + e.id} question={e.question} answer={e.answer} />
         </Question>)}
         <Score>
