@@ -53,8 +53,18 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
         }
         return score;
     }
+    const fillCorrectAnswers = () =>
+    {
+        for (let dataElement of data) {
+            let ans = dataElement.answer;
+            document.getElementById("quiz-" + dataElement.id).value = ans;
+        }
+    }
     const calc = () => {
         setCorrectAnswers(calculate());
+    }
+    const fill = () => {
+        fillCorrectAnswers();
     }
     return <>
         {data.map(e => <Question>
@@ -65,6 +75,7 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
         <Score>
             <p>Answers correct {correctAnswers} / {data.length}</p>
             <MyButton onClick={calc}>Check answers</MyButton>
+            <MyButton onClick={fill}>Fill in answers</MyButton>
         </Score>
         <MyButton onClick={()=>setQuizing(false)}>Back to settings</MyButton>
     </>;
