@@ -32,8 +32,26 @@ font-size:10px;
 const MyButton = styled(Button)`
 margin: 5px;
 `;
+
+function sameWords(str1, str2) {
+    // Remove all non-alphanumeric characters from both strings
+    const cleanStr1 = str1.replace(/[^\w\s]/g, "");
+    const cleanStr2 = str2.replace(/[^\w\s]/g, "");
+  
+    // Convert both strings to arrays of words
+    const arr1 = cleanStr1.split(" ");
+    const arr2 = cleanStr2.split(" ");
+  
+    // Sort the arrays of words
+    arr1.sort();
+    arr2.sort();
+  
+    // Join the arrays back into strings and compare them
+    return arr1.join(" ") === arr2.join(" ");
+  }
+    
 const isImageQuestion = (e) => e.question.startsWith("http"); 
-const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
+const Quiz = ({ data, setQuizing, isCaseSensitive,matchAnyOrder }) => {
     const [correctAnswers, setCorrectAnswers] = useState(0);
 
     const calculate = () => {
@@ -44,6 +62,10 @@ const Quiz = ({ data, setQuizing, isCaseSensitive }) => {
             if (isCaseSensitive) {
                 val = val.toLowerCase();
                 ans = ans.toLowerCase();
+            }
+            const sameWordsFound = sameWords(ans, val);
+            if (sameWordsFound) {
+                score++;
             }
             if (val === ans) {
                 score++;
@@ -175,7 +197,7 @@ const QuizStart = () => {
                 </Row>
         </Options>
             <MyButton onClick={() => setQuizing(true)}>Start Quiz</MyButton></>)}
-        {quizing && <Quiz setQuizing={setQuizing} isCaseSensitive={isCaseSensitive} separator={separator} data={questionsAndStuff}>/</Quiz>}
+        {quizing && <Quiz matchAnyOrder={matchAnyOrder} setQuizing={setQuizing} isCaseSensitive={isCaseSensitive} separator={separator} data={questionsAndStuff}>/</Quiz>}
     </>;
 
 }
