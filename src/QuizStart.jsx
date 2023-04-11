@@ -64,10 +64,9 @@ const Quiz = ({ data, setQuizing, isCaseSensitive,matchAnyOrder }) => {
                 ans = ans.toLowerCase();
             }
             const sameWordsFound = sameWords(ans, val);
-            if (sameWordsFound) {
+            if (matchAnyOrder && sameWordsFound) {
                 score++;
-            }
-            if (val === ans) {
+            } else if (val === ans) {
                 score++;
             } else {
                 console.log(val + " vs. " + ans);
