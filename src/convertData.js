@@ -36,17 +36,13 @@ function shuffleArray(array) {
 }
 
 export const calculateScore = (isCaseSensitive, val, ans, matchAnyOrder, score) => {
-    if (isCaseSensitive) {
-        val = val.toLowerCase();
-        ans = ans.toLowerCase();
-    }
-    const sameWordsFound = sameWords(ans, val);
-    if (matchAnyOrder && sameWordsFound) {
-        score++;
-    } else if (val === ans) {
+    const valToCompare = isCaseSensitive ? val.toLowerCase() : val;
+    const ansToCompare = isCaseSensitive ? ans.toLowerCase() : ans;
+    const sameWordsFound = sameWords(ansToCompare, valToCompare);
+    if (matchAnyOrder && sameWordsFound || valToCompare === ansToCompare) {
         score++;
     } else {
-        console.log(val + " vs. " + ans);
+        console.log(`${valToCompare} vs. ${ansToCompare}`);
     }
     return score;
 }
