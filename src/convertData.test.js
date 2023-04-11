@@ -1,4 +1,4 @@
-import { convertData } from './convertData';
+import { calculateScore, convertData } from './convertData';
 
 
 describe('convertData', () => {
@@ -50,4 +50,87 @@ describe('convertData', () => {
     ];
     expect(actualOutput).toEqual(expectedOutput);
   });
+});
+
+describe('calculateScore function', () => {
+  test('isCaseSensitive=true, val matches ans', () => {
+    const isCaseSensitive = true;
+    const val = 'hello';
+    const ans = 'hello';
+    const matchAnyOrder = true;
+    let score = 0;
+    const result = calculateScore(isCaseSensitive, val, ans, matchAnyOrder, score);
+    expect(result).toBe(1);
+  });
+
+  test('isCaseSensitive=false, val matches ans', () => {
+    const isCaseSensitive = false;
+    const val = 'HeLLo';
+    const ans = 'hElLo';
+    const matchAnyOrder = false;
+    let score = 0;
+    const result = calculateScore(isCaseSensitive, val, ans, matchAnyOrder, score);
+    expect(result).toBe(0);
+  });
+
+  test('isCaseSensitive=false, val does not match ans', () => {
+    const isCaseSensitive = false;
+    const val = 'heLLo';
+    const ans = 'bye';
+    const matchAnyOrder = false;
+    let score = 0;
+    const result = calculateScore(isCaseSensitive, val, ans, matchAnyOrder, score);
+    expect(result).toBe(0);
+  });
+
+  test('isCaseSensitive=true, val does not match ans', () => {
+    const isCaseSensitive = true;
+    const val = 'HeLLo';
+    const ans = 'bye';
+    const matchAnyOrder = false;
+    let score = 0;
+    const result = calculateScore(isCaseSensitive, val, ans, matchAnyOrder, score);
+    expect(result).toBe(0);
+  });
+
+  test('matchAnyOrder=true, isCaseSensitive=true, val matches ans', () => {
+    const isCaseSensitive = true;
+    const val = 'hello world';
+    const ans = 'world hello';
+    const matchAnyOrder = true;
+    let score = 0;
+    const result = calculateScore(isCaseSensitive, val, ans, matchAnyOrder, score);
+    expect(result).toBe(1);
+  });
+
+  test('matchAnyOrder=true, isCaseSensitive=false, val matches ans', () => {
+    const isCaseSensitive = false;
+    const val = 'heLLo WOrld';
+    const ans = 'wOrLd hello';
+    const matchAnyOrder = true;
+    let score = 0;
+    const result = calculateScore(isCaseSensitive, val, ans, matchAnyOrder, score);
+    expect(result).toBe(0);
+  });
+
+  test('matchAnyOrder=true, isCaseSensitive=false, val does not match ans', () => {
+    const isCaseSensitive = false;
+    const val = 'heLLo WOrld';
+    const ans = 'bye world';
+    const matchAnyOrder = true;
+    let score = 0;
+    const result = calculateScore(isCaseSensitive, val, ans, matchAnyOrder, score);
+    expect(result).toBe(0);
+  });
+
+  test('matchAnyOrder=false, isCaseSensitive=true, val partially matches ans', () => {
+    const isCaseSensitive = true;
+    const val = 'heLLo WOrld';
+    const ans = 'hello world';
+    const matchAnyOrder = false;
+    let score = 0;
+    const result = calculateScore(isCaseSensitive, val, ans, matchAnyOrder, score);
+    expect(result).toBe(1);
+  });
+
 });

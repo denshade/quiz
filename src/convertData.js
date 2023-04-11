@@ -34,3 +34,36 @@ function shuffleArray(array) {
         array[j] = temp;
     }
 }
+
+export const calculateScore = (isCaseSensitive, val, ans, matchAnyOrder, score) => {
+    if (isCaseSensitive) {
+        val = val.toLowerCase();
+        ans = ans.toLowerCase();
+    }
+    const sameWordsFound = sameWords(ans, val);
+    if (matchAnyOrder && sameWordsFound) {
+        score++;
+    } else if (val === ans) {
+        score++;
+    } else {
+        console.log(val + " vs. " + ans);
+    }
+    return score;
+}
+
+function sameWords(str1, str2) {
+    // Remove all non-alphanumeric characters from both strings
+    const cleanStr1 = str1.replace(/[^\w\s]/g, "");
+    const cleanStr2 = str2.replace(/[^\w\s]/g, "");
+  
+    // Convert both strings to arrays of words
+    const arr1 = cleanStr1.split(" ");
+    const arr2 = cleanStr2.split(" ");
+  
+    // Sort the arrays of words
+    arr1.sort();
+    arr2.sort();
+  
+    // Join the arrays back into strings and compare them
+    return arr1.join(" ") === arr2.join(" ");
+  }
